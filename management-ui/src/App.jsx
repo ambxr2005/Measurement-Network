@@ -2,6 +2,10 @@ import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import './App.css'
 
+// Production URLs use karo
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://management-api.up.railway.app';
+const WS_URL = import.meta.env.VITE_WS_URL || 'wss://management-api.up.railway.app';
+
 function App() {
   const [jobs, setJobs] = useState([])
   const [modules, setModules] = useState([])
@@ -40,10 +44,9 @@ function App() {
 
   const loadInitialData = async () => {
     try {
-      setIsLoading(true)
       const [jobsRes, modulesRes] = await Promise.all([
-        axios.get('http://localhost:3001/api/jobs'),
-        axios.get('http://localhost:3001/api/modules')
+        axios.get(`${API_BASE_URL}/api/jobs`),
+        axios.get(`${API_BASE_URL}/api/modules`)
       ])
       setJobs(jobsRes.data)
       setModules(modulesRes.data)

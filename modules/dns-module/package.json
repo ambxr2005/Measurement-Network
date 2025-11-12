@@ -1,8 +1,5 @@
 {
-  "name": "dns-module",
-  "version": "1.0.0",
-  "description": "DNS lookup module",
-  "main": "src/index.js",
+  "name": "dns-module", 
   "scripts": {
     "start": "node src/index.js"
   },

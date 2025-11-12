@@ -1,11 +1,7 @@
 {
-  "name": "anchor-service",
-  "version": "1.0.0",
-  "description": "Main anchor service for measurement network",
-  "main": "src/index.js",
+  "name": "anchor-service", 
   "scripts": {
-    "start": "node src/index.js",
-    "dev": "nodemon src/index.js"
+    "start": "node src/index.js"
   },
   "dependencies": {
     "nats": "^2.18.1",
@@ -13,8 +9,5 @@
     "ws": "^8.14.2",
     "axios": "^1.6.0",
     "chokidar": "^3.5.3"
-  },
-  "devDependencies": {
-    "nodemon": "^3.0.1"
   }
 }

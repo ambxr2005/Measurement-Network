@@ -1,0 +1,54 @@
+[build]
+builder = "NIXPACKS"
+
+[deploy]
+startCommand = "echo 'Multi-service project'"
+
+# Frontend Service
+[[services]]
+name = "management-ui"
+rootDirectory = "./management-ui"
+command = "npm run build && npx serve -s dist -l 5173"
+[services.env]
+PORT = "5173"
+
+# Management API Service
+[[services]]
+name = "management-api"
+rootDirectory = "./management-api" 
+command = "npm start"
+[services.env]
+PORT = "3001"
+NATS_URL = "nats://nats:4222"
+
+# Anchor Service
+[[services]]
+name = "anchor-service"
+rootDirectory = "./anchor-service"
+command = "npm start"
+[services.env] 
+PORT = "3000"
+NATS_URL = "nats://nats:4222"
+
+# NATS Message Broker
+[[services]]
+name = "nats"
+image = "nats:latest"
+[services.env]
+PORT = "4222"
+
+# Ping Module
+[[services]]
+name = "ping-module"
+rootDirectory = "./modules/ping-module"
+command = "npm start"
+[services.env]
+NATS_URL = "nats://nats:4222"
+
+# DNS Module  
+[[services]]
+name = "dns-module"
+rootDirectory = "./modules/dns-module"
+command = "npm start"
+[services.env]
+NATS_URL = "nats://nats:4222"
