@@ -1,0 +1,81 @@
+version: '3.8'
+services:
+  nats:
+    image: nats:latest
+    ports:
+      - "4222:4222"
+      - "8222:8222"
+    command: -js -m 8222
+
+  anchor-service:
+    build: ./anchor-service
+    ports:
+      - "3000:3000"
+    environment:
+      - NATS_URL=nats://nats:4222
+    depends_on:
+      - nats
+    restart: unless-stopped
+
+  management-api:
+    build: ./management-api
+    ports:
+      - "3001:3001"
+    environment:
+      - NATS_URL=nats://nats:4222
+    depends_on:
+      - nats
+      - anchor-service
+    restart: unless-stopped
+
+  management-ui:
+    build: ./management-ui
+    ports:
+      - "5173:5173"
+    depends_on:
+      - management-api
+    restart: unless-stopped
+
+  ping-module:
+    build: ./modules/ping-module
+    environment:
+      - NATS_URL=nats://nats:4222
+    depends_on:
+      - nats
+    restart: unless-stopped
+    # ✅ YEH ADD KARO: ICMP ping ke liye privileges
+    cap_add:
+      - NET_RAW
+    security_opt:
+      - seccomp=unconfined
+    healthcheck:
+      test: ["CMD", "node", "-e", "process.exit(0)"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  dns-module:
+    build: ./modules/dns-module
+    environment:
+      - NATS_URL=nats://nats:4222
+    depends_on:
+      - nats
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "node", "-e", "process.exit(0)"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  http-module:
+    build: ./modules/http-module
+    environment:
+      - NATS_URL=nats://nats:4222
+    depends_on:
+      - nats
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "node", "-e", "process.exit(0)"]
+      interval: 30s
+      timeout: 10s
+      retries: 3

@@ -1,0 +1,13 @@
+{
+  "name": "http-module",
+  "version": "1.0.0",
+  "description": "HTTP probe module",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js"
+  },
+  "dependencies": {
+    "nats": "^2.18.1",
+    "axios": "^1.6.0"
+  }
+}
